@@ -40,7 +40,6 @@ def findShape(cnt):
 			cir += 1
 
 ###### main ######
-`
 _, thresh = cv2.threshold(img, 87, 255, cv2.THRESH_BINARY)
 
 contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
