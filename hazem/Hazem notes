@@ -1,0 +1,4 @@
+libraries :
+numpy
+cv2
+

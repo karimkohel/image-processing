@@ -6,20 +6,22 @@ cap = cv2.VideoCapture(0)
 while True:
 	_,frame = cap.read()
 
-	laplication = cv2.Laplacian(frame, cv2.CV_64F)
+	laplacian = cv2.Laplacian(frame, cv2.CV_64F)
 
 	sobelx = cv2.Sobel(frame, cv2.CV_64F, 1, 0, ksize=5)
 	sobely = cv2.Sobel(frame, cv2.CV_64F, 0, 1, ksize=5)
 
-	cv2.imshow("original", frame)
-	cv2.imshow("laplication", laplication)
-	cv2.imshow('X', sobelx)
-	cv2.imshow('Y', sobely)
+	edges = cv2.Canny(frame, 50, 100)
+
+	# cv2.imshow("original", frame)
+	# cv2.imshow("laplication", laplacian)
+	# cv2.imshow('X', sobelx)
+	# cv2.imshow('Y', sobely)
+	cv2.imshow("edges", edges)
 
 	k = cv2.waitKey(5) & 0xFF
 	if k == 27:
 		break
-
 
 
 
