@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import cv2
 import numpy as np 
 sora=cv2.imread("car.jpg")
