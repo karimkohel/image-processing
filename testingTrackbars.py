@@ -43,7 +43,7 @@ while True:
 
 
 	cv2.imshow("original", frame)
-	# cv2.imshow("mask", mask)
+	cv2.imshow("mask", mask)
 	cv2.imshow("result", res)
 	key = cv2.waitKey(1)
 	if key == 27:
