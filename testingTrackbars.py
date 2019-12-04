@@ -11,12 +11,12 @@ cap = cv2.VideoCapture(0)
 
 cv2.namedWindow("Trackbars")
 
-cv2.createTrackbar('L-H', "Trackbars", 50, 179, nth)
-cv2.createTrackbar('L-S', "Trackbars", 50, 255, nth)
-cv2.createTrackbar('L-V', "Trackbars", 50, 255, nth)
-cv2.createTrackbar('U-H', "Trackbars", 50, 179, nth)
-cv2.createTrackbar('U-S', "Trackbars", 50, 255, nth)
-cv2.createTrackbar('U-V', "Trackbars", 50, 255, nth)
+cv2.createTrackbar('L-H', "Trackbars", 0, 179, nth)
+cv2.createTrackbar('L-S', "Trackbars", 0, 255, nth)
+cv2.createTrackbar('L-V', "Trackbars", 0, 255, nth)
+cv2.createTrackbar('U-H', "Trackbars", 179, 179, nth)
+cv2.createTrackbar('U-S', "Trackbars", 255, 255, nth)
+cv2.createTrackbar('U-V', "Trackbars", 255, 255, nth)
 
 
 while True:
@@ -43,7 +43,7 @@ while True:
 
 
 	cv2.imshow("original", frame)
-	cv2.imshow("mask", mask)
+	# cv2.imshow("mask", mask)
 	cv2.imshow("result", res)
 	key = cv2.waitKey(1)
 	if key == 27:
