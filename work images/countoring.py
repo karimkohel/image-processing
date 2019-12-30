@@ -17,7 +17,9 @@ def findShape(cnt):
 	global cir
 	global squ
 
+
 	approx = cv2.approxPolyDP(cnt, 0.035 * cv2.arcLength(cnt,True), True)
+
 	area = cv2.contourArea(cnt)
 
 	if 1500 < area < 19000:
