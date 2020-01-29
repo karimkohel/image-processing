@@ -8,7 +8,7 @@ cap = cv2.VideoCapture(0)
 
 i = 0
 
-side = ["top.png", "side1.png", "side2.png", "side3.png", "side4.png"]
+side = ["Top.png", "Side1.png", "Side2.png", "Side3.png", "Side4.png"]
 
 ############### F(x) ###############
 
@@ -29,6 +29,7 @@ def take_photos(frame, x, y, w, h):
 	print("->saving " + side[i])
 	cv2.imwrite(side[i], frame)
 	cropped = frame[y:y+h, x:x+w]
+	cv2.imwrite("Cropped"+side[i], cropped)
 
 	i += 1
 
@@ -40,8 +41,8 @@ def take_photos(frame, x, y, w, h):
 ############### MAIN ###############
 
 cv2.namedWindow("Edge detection thresholds")
-cv2.createTrackbar("thresh1", "Edge detection thresholds", 40, 255, empty)
-cv2.createTrackbar("thresh2", "Edge detection thresholds", 40, 255, empty)
+cv2.createTrackbar("thresh1", "Edge detection thresholds", 60, 255, empty)
+cv2.createTrackbar("thresh2", "Edge detection thresholds", 50, 255, empty)
 
 while True:
 	succes, frame = cap.read()
@@ -61,13 +62,13 @@ while True:
 
 	for cnt in contours:
 		area = cv2.contourArea(cnt)
+		approx = cv2.approxPolyDP(cnt, 0.02 * cv2.arcLength(cnt,True), True)
 
-		if area > 1500:
-			approx = cv2.approxPolyDP(cnt, 0.02 * cv2.arcLength(cnt,True), True)
+		if area > 1500 and len(approx) == 4:
 			x,y,w,h = cv2.boundingRect(approx)
+			cv2.drawContours(frame, [approx], -1, (0,255,0), 3)
+			break # found the contour so break out of the for loop
 
-			if len(approx) == 4:
-				cv2.drawContours(frame, [approx], -1, (0,255,0), 3)
 		else:
 			x,y,w,h = -1,-1,-1,-1
 
@@ -79,6 +80,7 @@ while True:
 		sleep(2)
 		if cv2.waitKey(1) & 0xFF == ord('s'):
 			keep_going, cropped = take_photos(frame, x, y, w, h)
+
 			if not keep_going:
 				print("finished all 5 photos and exiting")
 				break
@@ -104,7 +106,7 @@ exit()
 
 """
 to do:
-	-save cropped photos and originals
+	-ORIENT THE CROPPED IMAGES
 
 	-ask for approval after each photo to make sure or to retake
 
