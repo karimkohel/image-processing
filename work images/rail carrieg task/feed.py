@@ -26,9 +26,33 @@ def take_photos(frame, x, y, w, h):
 
 	global i
 
-	print("->saving " + side[i])
 	cv2.imwrite(side[i], frame)
-	cropped = frame[y:y+h, x:x+w]
+
+	
+	rows = frame.shape[0]
+	columns = frame.shape[1]
+
+	while True:
+		degree = cv2.getTrackbarPos("rotation", "window")
+		matrix = cv2.getRotationMatrix2D((x+w/2, y+h/2), degree, 1)
+		rotated = cv2.warpAffine(frame, matrix, (columns,rows))
+		cv2.imshow("rotation", rotated)
+
+		newk = cv2.waitKey(3)
+
+		if newk == ord('s'):
+			break
+		elif newk == ord("q"):
+			print("ok won't save")
+			return True, -1
+		else:
+			continue
+
+	cv2.destroyWindow("rotation")
+
+	cropped = rotated[y:y+h, x:x+w]
+
+	print("->saving " + side[i])
 	cv2.imwrite("Cropped"+side[i], cropped)
 
 	i += 1
@@ -36,13 +60,14 @@ def take_photos(frame, x, y, w, h):
 	if i == 5:
 		return False, -1
 	else:
-		return True, cropped
+		return True, rotated
 
 ############### MAIN ###############
 
-cv2.namedWindow("Edge detection thresholds")
-cv2.createTrackbar("thresh1", "Edge detection thresholds", 60, 255, empty)
-cv2.createTrackbar("thresh2", "Edge detection thresholds", 50, 255, empty)
+cv2.namedWindow("window")
+cv2.createTrackbar("thresh1", "window", 60, 255, empty)
+cv2.createTrackbar("thresh2", "window", 50, 255, empty)
+cv2.createTrackbar("rotation", "window", 0, 360, empty)
 
 while True:
 	succes, frame = cap.read()
@@ -51,8 +76,8 @@ while True:
 	imggray = cv2.cvtColor(imgblur, cv2.COLOR_BGR2GRAY)
 	imggray = cv2.bilateralFilter(imggray, 1, 10, 120 )
 
-	thresh1 = cv2.getTrackbarPos("thresh1", "Edge detection thresholds")
-	thresh2 = cv2.getTrackbarPos("thresh2", "Edge detection thresholds")
+	thresh1 = cv2.getTrackbarPos("thresh1", "window")
+	thresh2 = cv2.getTrackbarPos("thresh2", "window")
 	imgedge = cv2.Canny(imggray, thresh1, thresh2)
 
 	kernel = cv2.getStructuringElement( cv2.MORPH_RECT, (7, 7))
@@ -106,9 +131,6 @@ exit()
 
 """
 to do:
-	-ORIENT THE CROPPED IMAGES
-
-	-ask for approval after each photo to make sure or to retake
 
 	-stitch the goddamn photos
 	
