@@ -70,17 +70,17 @@ def make_collage():
 
 	for i in range(5):
 		if i == 0 or i == 1 or i == 3:
-			final_photos[i] = cv2.resize(final_photos[i], (150,50))
+			final_photos[i] = cv2.resize(final_photos[i], (300,100))
 		else:
-			final_photos[i] = cv2.resize(final_photos[i], (50,50))
+			final_photos[i] = cv2.resize(final_photos[i], (100,100))
 
-	filler1 = np.zeros([50,50,3], dtype=np.uint8)
+	filler1 = np.zeros([100,100,3], dtype=np.uint8)
 	filler1.fill(255)
 
-	filler2 = np.zeros([50,50,3], dtype=np.uint8)
+	filler2 = np.zeros([100,100,3], dtype=np.uint8)
 	filler2.fill(255)
 
-	filler3 = np.zeros([50,150,3], dtype=np.uint8)
+	filler3 = np.zeros([100,300,3], dtype=np.uint8)
 	filler3.fill(255)
 
 
