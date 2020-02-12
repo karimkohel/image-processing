@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import cv2
+import numpy as np
 from time import sleep
 
 ############### INITs ###############
@@ -9,6 +10,7 @@ cap = cv2.VideoCapture(0)
 i = 0
 
 side = ["Top.png", "Side1.png", "Side2.png", "Side3.png", "Side4.png"]
+final_photos = []
 
 ############### F(x) ###############
 
@@ -54,6 +56,7 @@ def take_photos(frame, x, y, w, h):
 
 	print("->saving " + side[i])
 	cv2.imwrite("Cropped"+side[i], cropped)
+	final_photos.append(cropped)
 
 	i += 1
 
@@ -61,6 +64,31 @@ def take_photos(frame, x, y, w, h):
 		return False, -1
 	else:
 		return True, rotated
+
+def make_collage():
+
+	for i in range(5):
+		if i == 0 or i == 1 or i == 3:
+			final_photos[i] = cv2.resize(final_photos[i], (150,50))
+		else:
+			final_photos[i] = cv2.resize(final_photos[i], (50,50))
+
+	filler1 = np.zeros([50,50,3], dtype=np.uint8)
+	filler1.fill(255)
+
+	filler2 = np.zeros([50,50,3], dtype=np.uint8)
+	filler2.fill(255)
+
+	filler3 = np.zeros([50,150,3], dtype=np.uint8)
+	filler3.fill(255)
+
+
+	row1 = np.hstack([filler1, final_photos[0], filler2, filler3])
+	row2 = np.hstack([final_photos[4], final_photos[1], final_photos[2], final_photos[3]])
+
+	collage = np.vstack([row1, row2])
+
+	return collage
 
 ############### MAIN ###############
 
@@ -108,6 +136,17 @@ while True:
 
 			if not keep_going:
 				print("finished all 5 photos and exiting")
+				collage = make_collage()
+				cv2.imwrite("collage.png", collage)
+				cv2.imshow("collage", collage)
+				cv2.waitKey(0)
+				print("Goodbye.")
+				cap.release()
+				cv2.destroyAllWindows()
+				exit()
+
+
+
 				break
 		else:
 			print("Didn't save")
@@ -120,18 +159,12 @@ while True:
 			break
 		print("Will continue")
 
+
 	cv2.imshow("feed", frame)
 	cv2.imshow("edge", imgDil)
 
 
-print("Goodbye.")
+print("Didn\'t finish but\nGoodbye anyway.")
 cap.release()
 cv2.destroyAllWindows()
 exit()
-
-"""
-to do:
-
-	-stitch the goddamn photos
-	
-"""

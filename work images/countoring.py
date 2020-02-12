@@ -4,12 +4,14 @@ import cv2
 import numpy as np
 
 ##### inits #####
+
 tri, rect, cir, squ = 0, 0, 0, 0
 font = cv2.FONT_HERSHEY_COMPLEX
 resultScreen = cv2.imread("resultScreen.jpg")
 img = cv2.imread("rov1.jpg", 0)
 
 ##### Fx #####
+
 def findShape(cnt):
 
 	global tri
@@ -38,6 +40,7 @@ def findShape(cnt):
 			cir += 1
 
 ###### main ######
+`
 _, thresh = cv2.threshold(img, 87, 255, cv2.THRESH_BINARY)
 
 contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
