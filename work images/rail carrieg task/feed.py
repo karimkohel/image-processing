@@ -10,6 +10,7 @@ cap = cv2.VideoCapture(0)
 i = 0
 
 side = ["Top.png", "Side1.png", "Side2.png", "Side3.png", "Side4.png"]
+owner = "script written by karim kohel"
 final_photos = []
 
 ############### F(x) ###############
