@@ -35,13 +35,13 @@ def draw(block, color):
 
 	x = (block*block_size) - int(block_size/2)
 
-	if block < 9:
+	if block <= 9:
 		y = int(block_size/2) -10
 		x = (block*block_size) - int(block_size/2)
 	elif block > 9 and block < 19:
 		y = (block_size*2) - int(block_size/2)-10
 		x = ((block-9)*block_size) - int(block_size/2)
-	elif block > 19 and block < 27:
+	elif block >= 19 and block <= 27:
 		y = (block_size*3) - int(block_size/2)-10
 		x = ((block-18)*block_size) - int(block_size/2)
 	else:
