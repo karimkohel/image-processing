@@ -10,7 +10,6 @@ cap = cv2.VideoCapture(0)
 i = 0
 
 side = ["Top.png", "Side1.png", "Side2.png", "Side3.png", "Side4.png"]
-owner = "script written by karim kohel"
 final_photos = []
 
 ############### F(x) ###############
@@ -22,6 +21,8 @@ def empty():
 
 # keep taking photos?
 def take_photos(frame, x, y, w, h):
+	#a very complicated function that i would't be able to explain in a comment, but in short:
+	# it takes the photos and saves them cropped to size
 
 	if x < 0:
 		print("no rectangles in sight?")
@@ -67,6 +68,7 @@ def take_photos(frame, x, y, w, h):
 		return True, rotated
 
 def make_collage():
+	#the stitching phase where pictures are put alongside each other
 
 	for i in range(5):
 		if i == 0 or i == 1 or i == 3:
@@ -94,11 +96,13 @@ def make_collage():
 ############### MAIN ###############
 
 cv2.namedWindow("window")
-cv2.createTrackbar("thresh1", "window", 60, 255, empty)
-cv2.createTrackbar("thresh2", "window", 50, 255, empty)
-cv2.createTrackbar("rotation", "window", 0, 360, empty)
+cv2.createTrackbar("thresh1", "window", 60, 255, empty)#threshold for edge detection values
+cv2.createTrackbar("thresh2", "window", 50, 255, empty)#threshold for edge detection values
+cv2.createTrackbar("rotation", "window", 0, 360, empty)#rotaion angle to crop the photo accuratly
 
 while True:
+
+	#the image recodnition part
 	succes, frame = cap.read()
 
 	imgblur = cv2.GaussianBlur(frame, (5,5), 1)
@@ -124,14 +128,14 @@ while True:
 			break # found the contour so break out of the for loop
 
 		else:
-			x,y,w,h = -1,-1,-1,-1
+			x,y,w,h = -1,-1,-1,-1 #default values that would exit the take_photos function
 
 	
 	k = cv2.waitKey(5)
 
 	if k == ord('s'):
 		print("Sure ?")
-		sleep(2)
+		sleep(2)#wait 2 seconds to ensure this is the frame you want to save with a second s press
 		if cv2.waitKey(1) & 0xFF == ord('s'):
 			keep_going, cropped = take_photos(frame, x, y, w, h)
 
@@ -154,7 +158,8 @@ while True:
 
 	elif k == ord('q'):
 		print("Are you sure you want to exit ?")
-		sleep(2)
+		sleep(2) #wait 2 seconds to confirm you want to quit with nother q press
+
 		if cv2.waitKey(1) & 0xFF == ord('q'):
 			print("exiting")
 			break
